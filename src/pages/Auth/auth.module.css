@@ -50,11 +50,20 @@
 }
 
 /* BOTÃO */
+
+.buttonContainer {
+  text-align: center;
+  margin-bottom: 30px;
+  
+}
 .button {
   background: #4b5320 !important;
   border: none;
   color: white;
   font-weight: bold;
+  padding: 8px 20px;
+  cursor: pointer;
+  border-radius: 7px;
 }
 
 .button:hover {

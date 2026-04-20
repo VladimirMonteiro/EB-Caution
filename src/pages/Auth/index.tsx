@@ -1,9 +1,12 @@
 import { useState } from "react";
-import { Form, Input, Button, Select, Typography } from "antd";
+import { Form, Input, Button, Select, Typography, message } from "antd";
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
+
 import styles from "./auth.module.css";
 
 import EB from "../../assets/exercito.png";
+import { useAuth } from "../../hooks/useAuth";
+import type { LoginRequest } from "../../contexts/auth/types";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -27,6 +30,23 @@ const GRADUACOES = [
 export function Auth() {
   const [isRegister, setIsRegister] = useState(false);
 
+  const { authenticate } = useAuth();
+
+  async function handleLogin(values: LoginRequest) {
+  try {
+    await authenticate(values);
+
+    message.success("Login realizado com sucesso");
+
+    // 👉 exemplo:
+    // navigate("/dashboard");
+   
+
+  } catch (err: any) {
+    message.error(err.message || "Erro ao fazer login");
+  }
+}
+
   return (
     <div className={`${styles.container} ${isRegister ? styles.active : ""}`}>
       {/* FORM LOGIN */}
@@ -34,7 +54,7 @@ export function Auth() {
         <div className={styles.formBox}>
           <Title level={3}>Acesso ao Sistema</Title>
 
-          <Form layout="vertical">
+          <Form layout="vertical" onFinish={handleLogin}>
             <Form.Item name="email" rules={[{ required: true }]}>
               <Input prefix={<MailOutlined />} placeholder="E-mail" />
             </Form.Item>
@@ -43,9 +63,8 @@ export function Auth() {
               <Input.Password prefix={<LockOutlined />} placeholder="Senha" />
             </Form.Item>
 
-            <Button className={styles.button} block>
-              Entrar
-            </Button>
+            <input type="submit" className={styles.button} value="entrar" />
+              
           </Form>
 
           <Text>

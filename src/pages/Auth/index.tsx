@@ -94,7 +94,9 @@ export function Auth() {
               <Input.Password prefix={<LockOutlined />} placeholder="Senha" />
             </Form.Item>
 
-            <div className={styles.buttonContainer}><input type="submit" className={styles.button} value="entrar" /></div>
+            <div className={styles.buttonContainer}>
+              <input type="submit" className={styles.button} value="entrar" />
+            </div>
           </Form>
 
           <Text>
@@ -163,7 +165,13 @@ export function Auth() {
               </Select>
             </Form.Item>
 
-            <div className={styles.buttonContainer}><input type="submit" className={styles.button} value="Registrar" /></div>
+            <div className={styles.buttonContainer}>
+              <input
+                type="submit"
+                className={styles.button}
+                value="Registrar"
+              />
+            </div>
           </Form>
 
           <Text>

@@ -39,13 +39,12 @@ export function Auth() {
 
   const { authenticate } = useAuth();
 
+  function toggleIsRegister() {
+    setIsRegister((prev) => !prev);
 
- function toggleIsRegister() {
-  setIsRegister((prev) => !prev);
-
-  loginForm.resetFields();
-  registerForm.resetFields();
-}
+    loginForm.resetFields();
+    registerForm.resetFields();
+  }
 
   async function handleLogin(values: LoginRequest) {
     try {
@@ -81,11 +80,17 @@ export function Auth() {
           <Title level={3}>Acesso ao Sistema</Title>
 
           <Form layout="vertical" form={loginForm} onFinish={handleLogin}>
-            <Form.Item name="email" rules={[{ required: true }]}>
+            <Form.Item
+              name="email"
+              rules={[{ required: true, message: "E-mail é obrigatório." }]}
+            >
               <Input prefix={<MailOutlined />} placeholder="E-mail" />
             </Form.Item>
 
-            <Form.Item name="password" rules={[{ required: true }]}>
+            <Form.Item
+              name="password"
+              rules={[{ required: true, message: "A senha é obrigatória." }]}
+            >
               <Input.Password prefix={<LockOutlined />} placeholder="Senha" />
             </Form.Item>
 
@@ -105,26 +110,50 @@ export function Auth() {
           <Title level={3}>Criar Conta</Title>
 
           <Form layout="vertical" form={registerForm} onFinish={handleRegister}>
-            <Form.Item name="warName" rules={[{ required: true }]}>
+            <Form.Item
+              name="warName"
+              rules={[
+                { required: true, message: "O nome de guerra é obrigatório." },
+              ]}
+            >
               <Input prefix={<UserOutlined />} placeholder="Nome de Guerra" />
             </Form.Item>
 
-            <Form.Item name="email" rules={[{ required: true }]}>
+            <Form.Item
+              name="email"
+              rules={[{ required: true, message: "O E-mail é obrigatório." }]}
+            >
               <Input prefix={<MailOutlined />} placeholder="E-mail" />
             </Form.Item>
 
-            <Form.Item name="password" rules={[{ required: true }]}>
+            <Form.Item
+              name="password"
+              rules={[{ required: true, message: "A senha é obrigatória." }]}
+            >
               <Input.Password prefix={<LockOutlined />} placeholder="Senha" />
             </Form.Item>
 
-            <Form.Item name="passwordConfirm" rules={[{ required: true }]}>
+            <Form.Item
+              name="passwordConfirm"
+              rules={[
+                {
+                  required: true,
+                  message: "A confirmação de senha é obrigatória.",
+                },
+              ]}
+            >
               <Input.Password
                 prefix={<LockOutlined />}
                 placeholder="Confirme sua senha"
               />
             </Form.Item>
 
-            <Form.Item name="grad" rules={[{ required: true }]}>
+            <Form.Item
+              name="grad"
+              rules={[
+                { required: true, message: "A graduação é obrigatória." },
+              ]}
+            >
               <Select placeholder="Selecione a graduação">
                 {GRADUACOES.map((g) => (
                   <Option key={g.value} value={g.value}>
@@ -138,8 +167,7 @@ export function Auth() {
           </Form>
 
           <Text>
-            Já possui conta?{" "}
-            <span onClick={toggleIsRegister}>Fazer login</span>
+            Já possui conta? <span onClick={toggleIsRegister}>Fazer login</span>
           </Text>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Form, Input, Button, Select, Typography, message } from "antd";
+import { useNavigate } from "react-router-dom";
+import { Form, Input, Select, Typography, message } from "antd";
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 
 import styles from "./auth.module.css";
@@ -33,11 +34,12 @@ const GRADUACOES = [
 
 export function Auth() {
   const [isRegister, setIsRegister] = useState(false);
+  const navigate = useNavigate()
 
   const [loginForm] = Form.useForm();
   const [registerForm] = Form.useForm();
 
-  const { authenticate } = useAuth();
+  const { user, authenticate } = useAuth();
 
   function toggleIsRegister() {
     setIsRegister((prev) => !prev);
@@ -53,8 +55,7 @@ export function Auth() {
       message.success("Login realizado com sucesso");
       loginForm.resetFields();
 
-      // 👉 exemplo:
-      // navigate("/dashboard");
+      navigate(`/dashboard/${user?.id}`)
     } catch (err: any) {
       message.error(err.message || "Erro ao fazer login");
     }

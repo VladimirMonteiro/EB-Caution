@@ -9,9 +9,8 @@ import { getUserFromToken } from "../../utils/getUserFromToken";
 import type { AuthContextType, UserStorage } from "./types";
 import { loginRequest } from "../../services/authService";
 
-export const authContext = createContext<AuthContextType>(
-  {} as AuthContextType,
-);
+export const authContext = createContext<AuthContextType | null>(null);
+
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<UserStorage | null>(null);
@@ -28,16 +27,26 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setLoading(false);
   }, []);
 
-  async function authenticate(data: LoginRequest): Promise<void> {
-    const response: LoginResponse = await loginRequest(data);
+ async function authenticate(data: LoginRequest): Promise<UserStorage | undefined> {
+  const response: LoginResponse = await loginRequest(data);
 
-    if (response?.token) {
-      const userData = getUserFromToken(response.token);
+  if (response?.token) {
+    const decoded = getUserFromToken(response.token);
 
-      setUser(userData);
-      setUserLocalStorage(userData);
-    }
+    const userData: UserStorage = {
+      token: response.token,
+      email: decoded.email,
+      id: decoded.id,
+      role: decoded.role,
+      warName: decoded.warName,
+      grad: decoded.grad,
+    };
+
+    setUser(userData);
+    setUserLocalStorage(userData);
+    return userData;
   }
+}
 
   function logout() {
     setUser(null);

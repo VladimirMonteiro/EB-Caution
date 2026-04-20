@@ -6,7 +6,11 @@ import styles from "./auth.module.css";
 
 import EB from "../../assets/exercito.png";
 import { useAuth } from "../../hooks/useAuth";
-import type { LoginRequest } from "../../contexts/auth/types";
+import type {
+  LoginRequest,
+  RegisterRequest,
+} from "../../services/authService/types";
+import { registerRequest } from "../../services/authService";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -30,22 +34,44 @@ const GRADUACOES = [
 export function Auth() {
   const [isRegister, setIsRegister] = useState(false);
 
+  const [loginForm] = Form.useForm();
+  const [registerForm] = Form.useForm();
+
   const { authenticate } = useAuth();
 
-  async function handleLogin(values: LoginRequest) {
-  try {
-    await authenticate(values);
 
-    message.success("Login realizado com sucesso");
+ function toggleIsRegister() {
+  setIsRegister((prev) => !prev);
 
-    // 👉 exemplo:
-    // navigate("/dashboard");
-   
-
-  } catch (err: any) {
-    message.error(err.message || "Erro ao fazer login");
-  }
+  loginForm.resetFields();
+  registerForm.resetFields();
 }
+
+  async function handleLogin(values: LoginRequest) {
+    try {
+      await authenticate(values);
+
+      message.success("Login realizado com sucesso");
+      loginForm.resetFields();
+
+      // 👉 exemplo:
+      // navigate("/dashboard");
+    } catch (err: any) {
+      message.error(err.message || "Erro ao fazer login");
+    }
+  }
+
+  async function handleRegister(values: RegisterRequest) {
+    try {
+      await registerRequest(values);
+      console.log(values);
+      message.success("Cadastro realizado com sucesso");
+      registerForm.resetFields();
+      setIsRegister(false);
+    } catch (error: any) {
+      message.error(error.message || "Erro ao fazer login");
+    }
+  }
 
   return (
     <div className={`${styles.container} ${isRegister ? styles.active : ""}`}>
@@ -54,7 +80,7 @@ export function Auth() {
         <div className={styles.formBox}>
           <Title level={3}>Acesso ao Sistema</Title>
 
-          <Form layout="vertical" onFinish={handleLogin}>
+          <Form layout="vertical" form={loginForm} onFinish={handleLogin}>
             <Form.Item name="email" rules={[{ required: true }]}>
               <Input prefix={<MailOutlined />} placeholder="E-mail" />
             </Form.Item>
@@ -64,12 +90,11 @@ export function Auth() {
             </Form.Item>
 
             <input type="submit" className={styles.button} value="entrar" />
-              
           </Form>
 
           <Text>
             Não possui conta?{" "}
-            <span onClick={() => setIsRegister(true)}>Criar conta</span>
+            <span onClick={toggleIsRegister}>Criar conta</span>
           </Text>
         </div>
       </div>
@@ -79,7 +104,7 @@ export function Auth() {
         <div className={styles.formBox}>
           <Title level={3}>Criar Conta</Title>
 
-          <Form layout="vertical">
+          <Form layout="vertical" form={registerForm} onFinish={handleRegister}>
             <Form.Item name="warName" rules={[{ required: true }]}>
               <Input prefix={<UserOutlined />} placeholder="Nome de Guerra" />
             </Form.Item>
@@ -92,7 +117,7 @@ export function Auth() {
               <Input.Password prefix={<LockOutlined />} placeholder="Senha" />
             </Form.Item>
 
-            <Form.Item name="confirmPassword" rules={[{ required: true }]}>
+            <Form.Item name="passwordConfirm" rules={[{ required: true }]}>
               <Input.Password
                 prefix={<LockOutlined />}
                 placeholder="Confirme sua senha"
@@ -109,14 +134,12 @@ export function Auth() {
               </Select>
             </Form.Item>
 
-            <Button className={styles.button} block>
-              Registrar
-            </Button>
+            <input type="submit" className={styles.button} value="Registrar" />
           </Form>
 
           <Text>
             Já possui conta?{" "}
-            <span onClick={() => setIsRegister(false)}>Fazer login</span>
+            <span onClick={toggleIsRegister}>Fazer login</span>
           </Text>
         </div>
       </div>

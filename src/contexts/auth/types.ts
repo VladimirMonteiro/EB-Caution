@@ -1,11 +1,4 @@
-export type LoginRequest = {
-  email: string;
-  password: string;
-};
-
-export type LoginResponse = {
-  token: string;
-};
+import type { LoginRequest } from "../../services/authService/types";
 
 export type User = {
   id?: number;

@@ -1,6 +1,5 @@
 import api from "../../utils/api";
-import { getUserFromToken } from "../../utils/getUserFromToken";
-import type { LoginRequest, LoginResponse, UserStorage } from "./types";
+import type { UserStorage } from "./types";
 
 export function setUserLocalStorage(user: UserStorage | null) {
   if (!user) {
@@ -26,19 +25,4 @@ export function getUserLocalStorage(): UserStorage | null {
   }
 
   return user;
-}
-
-export async function loginRequest(data: LoginRequest): Promise<LoginResponse> {
-  try {
-    const response = await api.post("auth/login", data);
-    console.log(getUserFromToken(response.data.token));
-
-    return response.data;
-  } catch (error: any) {
-    console.error("Erro no login:", error?.response?.data || error.message);
-
-    throw new Error(
-      error?.response?.data?.message || "Erro ao autenticar usuário",
-    );
-  }
 }

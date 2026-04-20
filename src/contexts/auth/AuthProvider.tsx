@@ -1,16 +1,13 @@
 import { createContext, useState, useEffect } from "react";
-import {
-  getUserLocalStorage,
-  loginRequest,
-  setUserLocalStorage,
-} from "./utils";
+import { getUserLocalStorage, setUserLocalStorage } from "./utils";
 import type {
   LoginRequest,
   LoginResponse,
-  UserStorage,
-  AuthContextType,
-} from "./types";
+} from "../../services/authService/types";
+
 import { getUserFromToken } from "../../utils/getUserFromToken";
+import type { AuthContextType, UserStorage } from "./types";
+import { loginRequest } from "../../services/authService";
 
 export const authContext = createContext<AuthContextType>(
   {} as AuthContextType,

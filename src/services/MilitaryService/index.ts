@@ -24,4 +24,4 @@ const findAllMilitary = async (userId: string): Promise<MilitaryResponse[]> => {
   }
 };
 
-export { createMilitary };
+export { createMilitary, findAllMilitary };

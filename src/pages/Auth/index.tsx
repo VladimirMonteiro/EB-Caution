@@ -34,7 +34,8 @@ const GRADUACOES = [
 
 export function Auth() {
   const [isRegister, setIsRegister] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const [loginForm] = Form.useForm();
   const [registerForm] = Form.useForm();
@@ -50,19 +51,23 @@ export function Auth() {
 
   async function handleLogin(values: LoginRequest) {
     try {
+      setLoading(true);
       await authenticate(values);
 
       message.success("Login realizado com sucesso");
       loginForm.resetFields();
 
-      navigate(`/dashboard/${user?.id}`)
+      navigate(`/dashboard/${user?.id}`);
     } catch (err: any) {
       message.error(err.message || "Erro ao fazer login");
+    } finally {
+      setLoading(false);
     }
   }
 
   async function handleRegister(values: RegisterRequest) {
     try {
+      setLoading(true);
       await registerRequest(values);
       console.log(values);
       message.success("Cadastro realizado com sucesso");
@@ -70,6 +75,8 @@ export function Auth() {
       setIsRegister(false);
     } catch (error: any) {
       message.error(error.message || "Erro ao fazer login");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -96,7 +103,11 @@ export function Auth() {
             </Form.Item>
 
             <div className={styles.buttonContainer}>
-              <input type="submit" className={styles.button} value="entrar" />
+              <input
+                type="submit"
+                className={styles.button}
+                value={loading ? "Carregando..." : "Entrar"}
+              />
             </div>
           </Form>
 
@@ -170,7 +181,7 @@ export function Auth() {
               <input
                 type="submit"
                 className={styles.button}
-                value="Registrar"
+                value={loading ? 'Registrando...' : 'Registrar'}
               />
             </div>
           </Form>

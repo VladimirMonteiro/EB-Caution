@@ -79,11 +79,6 @@ export function useMilitary(): UseMilitaryReturn {
   }
 
   const userId = user.id;
-
-  if (!user) {
-    throw new Error("Usuário não autenticado");
-  }
-
   const [data, setData] = useState<MilitaryResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
@@ -93,6 +88,7 @@ export function useMilitary(): UseMilitaryReturn {
 
   // ── Fetch ──────────────────────────────────────────────────────────────────
   const fetchData = useCallback(async () => {
+    
     setLoading(true);
     try {
       const result = await findAllMilitary(userId);

@@ -4,10 +4,10 @@ import type { UserStorage } from "../contexts/auth/types";
 type TokenPayload = {
   sub: string;
   exp: number;
-  id?: string;
-  role?: string;
-  warName?: string;
-  grad?: string;
+  id: string;
+  role: string;
+  warName: string;
+  grad: string;
 };
 
 export function getUserFromToken(token: string): UserStorage {

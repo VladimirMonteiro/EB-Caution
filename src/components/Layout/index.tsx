@@ -163,7 +163,7 @@ export function Layout() {
         <Drawer
           open={openDrawer}
           onClose={() => setOpenDrawer(false)}
-          width={220}
+          size={220}
           styles={{ body: { padding: 0 } }}
         >
           {sidebarMenu}

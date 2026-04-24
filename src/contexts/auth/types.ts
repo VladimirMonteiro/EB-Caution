@@ -1,20 +1,20 @@
 import type { LoginRequest } from "../../services/authService/types";
 
 export type User = {
-  id?: number;
+  id: string;
   email: string;
-  role?: string;
-  warName?: string;
-  grad?: string;
+  role: string;
+  warName: string;
+  grad: string;
 };
 
 export type UserStorage = {
   token: string;
   email: string;
-  id?: number;
-  role?: string;
-  warName?: string;
-  grad?: string;
+  id: string 
+  role: string;
+  warName: string;
+  grad: string;
 };
 
 export type AuthContextType = {

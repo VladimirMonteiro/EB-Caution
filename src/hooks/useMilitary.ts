@@ -40,7 +40,10 @@ export interface UseMilitaryReturn {
   /** Creates a new record, appends to local state on success */
   handleCreate: (payload: CreateMilitaryRequest) => Promise<MilitaryResponse>;
   /** Updates an existing record, patches local state on success */
-  handleUpdate: (id: string, payload: UpdateMilitaryRequest) => Promise<MilitaryResponse>;
+  handleUpdate: (
+    id: string,
+    payload: UpdateMilitaryRequest,
+  ) => Promise<MilitaryResponse>;
   /** Deletes a record with optimistic update + rollback on error */
   handleDelete: (militar: MilitaryResponse) => Promise<void>;
   /** Re-fetches the full list */
@@ -69,8 +72,17 @@ function normalize(str: string): string {
  * - Delete uses optimistic update with rollback
  */
 export function useMilitary(): UseMilitaryReturn {
-  const { user } = useAuth(); // adjust to your actual useAuth shape
+  const { user } = useAuth();
+
+  if (!user) {
+    throw new Error("Usuário não autenticado");
+  }
+
   const userId = user.id;
+
+  if (!user) {
+    throw new Error("Usuário não autenticado");
+  }
 
   const [data, setData] = useState<MilitaryResponse[]>([]);
   const [loading, setLoading] = useState(true);
@@ -146,7 +158,7 @@ export function useMilitary(): UseMilitaryReturn {
         await removeMilitary(userId, militar.id);
         message.success(`Militar ${militar.warName} excluído com sucesso.`);
       } catch {
-        setData((prev) => [militar, ...prev]); // rollback
+        setData((prev) => [militar, ...prev]);
         message.error("Erro ao excluir militar. Tente novamente.");
       } finally {
         setLoadingDelete(null);

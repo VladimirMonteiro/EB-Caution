@@ -4,7 +4,7 @@ import type { UserStorage } from "../contexts/auth/types";
 type TokenPayload = {
   sub: string;
   exp: number;
-  id?: number;
+  id?: string;
   role?: string;
   warName?: string;
   grad?: string;

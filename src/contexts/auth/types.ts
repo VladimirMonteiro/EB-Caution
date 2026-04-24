@@ -11,10 +11,10 @@ export type User = {
 export type UserStorage = {
   token: string;
   email: string;
-  id: string 
-  role: string;
-  warName: string;
-  grad: string;
+  id?: string 
+  role?: string;
+  warName?: string;
+  grad?: string;
 };
 
 export type AuthContextType = {

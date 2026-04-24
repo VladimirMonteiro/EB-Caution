@@ -46,6 +46,7 @@ export function Auth() {
     setIsRegister((prev) => !prev);
 
     loginForm.resetFields();
+    setLoading(false);
     registerForm.resetFields();
   }
 
@@ -90,7 +91,10 @@ export function Auth() {
           <Form layout="vertical" form={loginForm} onFinish={handleLogin}>
             <Form.Item
               name="email"
-              rules={[{ required: true, message: "E-mail é obrigatório." }]}
+              rules={[
+                { required: true, message: "O E-mail é obrigatório." },
+                { type: "email", message: "Digite um e-mail válido." },
+              ]}
             >
               <Input prefix={<MailOutlined />} placeholder="E-mail" />
             </Form.Item>
@@ -107,6 +111,7 @@ export function Auth() {
                 type="submit"
                 className={styles.button}
                 value={loading ? "Carregando..." : "Entrar"}
+                disabled={loading}
               />
             </div>
           </Form>
@@ -135,7 +140,10 @@ export function Auth() {
 
             <Form.Item
               name="email"
-              rules={[{ required: true, message: "O E-mail é obrigatório." }]}
+              rules={[
+                { required: true, message: "O E-mail é obrigatório." },
+                { type: "email", message: "Digite um e-mail válido." },
+              ]}
             >
               <Input prefix={<MailOutlined />} placeholder="E-mail" />
             </Form.Item>
@@ -181,7 +189,8 @@ export function Auth() {
               <input
                 type="submit"
                 className={styles.button}
-                value={loading ? 'Registrando...' : 'Registrar'}
+                value={loading ? "Registrando..." : "Registrar"}
+                disabled={loading}
               />
             </div>
           </Form>

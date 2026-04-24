@@ -70,6 +70,11 @@
   background: #2f3a12 !important;
 }
 
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 /* LINKS */
 span {
   color: #c1a14a;

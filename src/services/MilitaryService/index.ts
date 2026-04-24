@@ -1,27 +1,47 @@
 import { militaryRoutes } from "../../routes/militaryRoutes";
-
 import type { CreateMilitaryRequest, MilitaryResponse } from "./types";
 
-const createMilitary = async (
+/**
+ * MilitaryService
+ * Pure async functions — no React state here.
+ * All error propagation is left to the caller (the hook).
+ */
+
+export const createMilitary = async (
+  userId: string,
   data: CreateMilitaryRequest,
 ): Promise<MilitaryResponse> => {
-  try {
-    const response = await militaryRoutes.create(data);
-
-    return response.data;
-  } catch (error) {
-    throw new Error(`Ocorreu um erro ${error}`);
-  }
+  const response = await militaryRoutes.create(userId, data);
+  return response.data;
 };
 
-const findAllMilitary = async (userId: string): Promise<MilitaryResponse[]> => {
-  try {
-    const response = await militaryRoutes.findAll(userId);
-
-    return response.data;
-  } catch (error) {
-    throw new Error(`Ocorreu um erro ${error}`);
-  }
+export const findAllMilitary = async (
+  userId: string,
+): Promise<MilitaryResponse[]> => {
+  const response = await militaryRoutes.findAll(userId);
+  return response.data;
 };
 
-export { createMilitary, findAllMilitary };
+export const findMilitaryById = async (
+  userId: string,
+  militaryId: string,
+): Promise<MilitaryResponse> => {
+  const response = await militaryRoutes.findById(userId, militaryId);
+  return response.data;
+};
+
+export const removeMilitary = async (
+  userId: string,
+  militaryId: string,
+): Promise<void> => {
+  await militaryRoutes.remove(userId, militaryId);
+};
+
+export const updateMilitary = async (
+  userId: string,
+  militaryId: string,
+  data: Partial<CreateMilitaryRequest>,
+): Promise<MilitaryResponse> => {
+  const response = await militaryRoutes.update(userId, militaryId, data);
+  return response.data;
+};

@@ -1,0 +1,70 @@
+import { createContext, useState, useEffect } from "react";
+import { getUserLocalStorage, setUserLocalStorage } from "./utils";
+import type {
+  LoginRequest,
+  LoginResponse,
+} from "../../services/authService/types";
+
+import { getUserFromToken } from "../../utils/getUserFromToken";
+import type { AuthContextType, UserStorage } from "./types";
+import { loginRequest } from "../../services/authService";
+
+export const authContext = createContext<AuthContextType | null>(null);
+
+
+const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [user, setUser] = useState<UserStorage | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const stored = getUserLocalStorage();
+
+    if (stored?.token) {
+      const userData = getUserFromToken(stored.token);
+      setUser(userData);
+    }
+
+    setLoading(false);
+  }, []);
+
+ async function authenticate(data: LoginRequest): Promise<UserStorage | undefined> {
+  const response: LoginResponse = await loginRequest(data);
+
+  if (response?.token) {
+    const decoded = getUserFromToken(response.token);
+
+    const userData: UserStorage = {
+      token: response.token,
+      email: decoded.email,
+      id: decoded.id,
+      role: decoded.role,
+      warName: decoded.warName,
+      grad: decoded.grad,
+    };
+
+    setUser(userData);
+    setUserLocalStorage(userData);
+    return userData;
+  }
+}
+
+  function logout() {
+    setUser(null);
+    setUserLocalStorage(null);
+  }
+
+  return (
+    <authContext.Provider
+      value={{
+        user,
+        loading,
+        authenticate,
+        logout,
+      }}
+    >
+      {children}
+    </authContext.Provider>
+  );
+};
+
+export { AuthProvider };

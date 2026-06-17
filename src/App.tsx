@@ -7,9 +7,10 @@ import { Home } from "./pages/Home";
 import { Layout } from "./components/Layout";
 import { Cautions } from "./pages/Cautions";
 import { Military } from "./pages/Military";
-import { Materials } from "./pages/Materials";
+import { Loads } from "./pages/Loads";
 import { SubArmorer } from "./pages/SubArmorer";
 import { FunctionPass } from "./pages/FunctionPass";
+import { LoadDetails } from "./pages/LoadDetails";
 
 export function App() {
   return (
@@ -23,7 +24,8 @@ export function App() {
               <Route path="/dashboard/:id" element={<Home />} />
               <Route path="/cautelas/:id" element={<Cautions />} />
               <Route path="/militares/:id" element={<Military />} />
-              <Route path="/materiais/:id" element={<Materials />} />
+              <Route path="/cargas/:id" element={<Loads />} />
+              <Route path="/cargas/:id/:loadId" element={<LoadDetails />} />
               <Route path="/sub-armeiro/:id" element={<SubArmorer />} />
               <Route path="/passagem-funcao/:id" element={<FunctionPass />} />
             </Route>

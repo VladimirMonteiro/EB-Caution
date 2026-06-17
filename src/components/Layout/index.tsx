@@ -72,11 +72,11 @@ export function Layout() {
       },
     },
     {
-      key: "/materiais",
+      key: "/cargas",
       icon: <ToolOutlined />,
-      label: "Materiais",
+      label: "Cargas",
       onClick: () => {
-        navigate(`/materiais/${user?.id}`);
+        navigate(`/cargas/${user?.id}`);
         setOpenDrawer(false);
       },
     },
